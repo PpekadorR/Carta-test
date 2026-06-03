@@ -407,3 +407,18 @@ footer {
     border-radius: 8px; /* Opcional: redondea un poco las puntas de la imagen */
 }
 
+/* Estilos para el campo del nombre */
+#nombreCliente {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #444;
+    background-color: #222;
+    color: #fff;
+    margin-bottom: 15px;
+}
+
+/* Opcional: Para cambiar el color del texto del placeholder */
+#nombreCliente::placeholder {
+    color: #888;
+}
