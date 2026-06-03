@@ -239,11 +239,11 @@
           "alerta": "Rolls de 8 cortes, 5 ingredientes y sin arroz",
           "tipo": "tarjeta-simple",
           "items": [
-            { "nombre": "Sin Arroz Opción 1", "precio": "$7.900", "descripcion": "Salmón - Camarón - Queso Cream - Cebollín - Choclo Baby Panko (Envuelto en Palta)" },
-            { "nombre": "Sin Arroz Opción 2", "precio": "$7.500", "descripcion": "Pollo Panko - Palta - Palmito - Cebollín - Pimentón (Envuelto en Queso Cream)" },
-            { "nombre": "Sin Arroz Opción 3", "precio": "$8.000", "descripcion": "Camarón Panko - Queso Cream - Masago - Palta - Cebollín (Envuelto en Salmón)" },
-            { "nombre": "Sin Arroz Opción 4", "precio": "$7.600", "descripcion": "Pollo Teriyaki - Palta - Nueces - Almendras - Queso Cream - Cebollín (Env. Panko)" },
-            { "nombre": "Sin Arroz Opción 5", "precio": "$8.100", "descripcion": "Camarón - Salmón - Queso Cream - Palta - Cebollín (Envuelto en Panko)" }
+            { "nombre": "Sin Arroz Opción 1", "precio": "$7.900", "descripcion": "Salmón - Camarón - Queso Cream - Cebollín - Choclo Baby Panko (Envuelto en Palta)", "alias": "SIN N°1" },
+            { "nombre": "Sin Arroz Opción 2", "precio": "$7.500", "descripcion": "Pollo Panko - Palta - Palmito - Cebollín - Pimentón (Envuelto en Queso Cream)", "alias": "SIN N°2" },
+            { "nombre": "Sin Arroz Opción 3", "precio": "$8.000", "descripcion": "Camarón Panko - Queso Cream - Masago - Palta - Cebollín (Envuelto en Salmón)", "alias": "SIN N°3" },
+            { "nombre": "Sin Arroz Opción 4", "precio": "$7.600", "descripcion": "Pollo Teriyaki - Palta - Nueces - Almendras - Queso Cream - Cebollín (Env. Panko)", "alias": "SIN N°4" },
+            { "nombre": "Sin Arroz Opción 5", "precio": "$8.100", "descripcion": "Camarón - Salmón - Queso Cream - Palta - Cebollín (Envuelto en Panko)", "alias": "SIN N°5" }
           ]
         },
         {
