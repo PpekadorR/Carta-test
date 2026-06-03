@@ -100,7 +100,12 @@
                 <label for="notes-input">Indicaciones para la cocina:</label>
                 <textarea id="notes-input" rows="2" placeholder="Ej: Sin cebollín, cambiar panko..."></textarea>
             </div>
-
+<!-- NUEVO CAMPO PARA EL NOMBRE -->
+             <div class="form-group">
+                  <label for="nombreCliente"><b>TU NOMBRE:</b></label>
+                  <input type="text" id="nombreCliente" placeholder="Ej: Juan Pérez" class="form-control" required>
+             </div>
+            
             <div class="checkout-options">
                 <h4>Método de Entrega</h4>
                 <div class="radio-group">
@@ -154,7 +159,7 @@
     </footer>
 
     <script>
-        const TELEFONO_RESTAURANT = "56322122263"; 
+        const TELEFONO_RESTAURANT = "56937248200"; 
 
         let cart = {};
 
@@ -389,7 +394,7 @@
             
             texto += "--------------------------------------\n";
             texto += `*TOTAL A PAGAR:* ${formatPrice(total)}\n\n`;
-
+            texto += `*CLIENTE:* ${nombreCliente}\n`; // <-- Aquí va el nombre
             texto += `*ENTREGA:* ${deliveryMethod}\n`;
             if (deliveryMethod === 'Delivery') {
                 texto += `*DIRECCIÓN:* ${address}\n`;
