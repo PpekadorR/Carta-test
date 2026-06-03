@@ -399,7 +399,7 @@ function enviarPedidoWhatsApp() {
         total += itemTotal;
         
         // MODIFICADO: Se eliminó '[${item.categoria}]' de esta línea 👇
-        texto += `*${item.qty}x* ${name} (${formatPrice(item.price)} c/u) -> *${formatPrice(itemTotal)}*\n`;
+        texto += `*${item.qty}x* ${name} -> *${formatPrice(itemTotal)}*\n`;
     });
     
     texto += "--------------------------------------\n";
