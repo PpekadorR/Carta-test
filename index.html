@@ -392,17 +392,18 @@ function enviarPedidoWhatsApp() {
     let texto = "*¡HOLA! ME GUSTARÍA REALIZAR EL SIGUIENTE PEDIDO:* \n\n";
     texto += "--------------------------------------\n";
     
-        let total = 0;
-        keys.forEach(name => {
-            const item = cart[name];
-            const itemTotal = item.price * item.qty;
-            total += itemTotal;
-    
-            // 👈 Evaluamos si el producto tiene alias guardado
-            const nombreMensaje = item.alias ? item.alias : name;
-    
-            texto += `*${item.qty}x* ${nombreMensaje} -> *${formatPrice(itemTotal)}*\n`;
-        });
+let total = 0;
+keys.forEach(name => {
+    const item = cart[name];
+    const itemTotal = item.price * item.qty;
+    total += itemTotal;
+
+    // 1. Si tiene alias lo guarda como "[alias] ", si NO tiene se queda totalmente vacío ""
+    const textoAlias = item.alias ? `[${item.alias}] ` : '';
+
+    // 2. Juntamos todo: Cantidad, Alias (si hay), Nombre completo -> Valor Total
+    texto += `*${item.qty}x* ${textoAlias}${name} -> *${formatPrice(itemTotal)}*\n`;
+});
     
     texto += "--------------------------------------\n";
     texto += `*TOTAL A PAGAR:* ${formatPrice(total)}\n\n`;
