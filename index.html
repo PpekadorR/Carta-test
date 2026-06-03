@@ -368,7 +368,7 @@
                 alert("Por favor, agrega productos al carro antes de enviar.");
                 return;
             }
-
+            const nombreCliente = document.getElementById('nombreCliente').value;
             const deliveryMethod = document.querySelector('input[name="delivery"]:checked').value;
             const address = document.getElementById('address-input').value.trim();
             
