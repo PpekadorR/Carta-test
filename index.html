@@ -399,7 +399,7 @@ keys.forEach(name => {
     total += itemTotal;
 
     // 1. Si tiene alias lo guarda como "[alias] ", si NO tiene se queda totalmente vacío ""
-    const textoAlias = item.alias ? `[*${item.alias}*] ` : '';
+    const textoAlias = item.alias ? `[ *${item.alias}* ] ` : '';
 
     // 2. Juntamos todo: Cantidad, Alias (si hay), Nombre completo -> Valor Total
     texto += `*${item.qty}x* ${textoAlias}${name} -> *${formatPrice(itemTotal)}*\n`;
@@ -409,7 +409,7 @@ keys.forEach(name => {
     texto += `*TOTAL A PAGAR:* ${formatPrice(total)}\n\n`;
     
     // Aquí se estructura el cierre con el nombre antes de la dirección
-    texto += `*CLIENTE:* ${nombreCliente}\n`; 
+    texto += `CLIENTE: *${nombreCliente}*\n`; 
     texto += `*ENTREGA:* ${deliveryMethod}\n`;
     if (deliveryMethod === 'Delivery') {
         texto += `*DIRECCIÓN:* ${address}\n`;
