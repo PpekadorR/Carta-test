@@ -362,57 +362,70 @@
             }
         }
 
-        function enviarPedidoWhatsApp() {
-            const keys = Object.keys(cart);
-            if (keys.length === 0) {
-                alert("Por favor, agrega productos al carro antes de enviar.");
-                return;
-            }
-            const nombreCliente = document.getElementById('nombreCliente').value;
-            const deliveryMethod = document.querySelector('input[name="delivery"]:checked').value;
-            const address = document.getElementById('address-input').value.trim();
-            
-            if (deliveryMethod === 'Delivery' && address === "") {
-                alert("Por favor, ingresa tu dirección para poder enviarte el Delivery.");
-                document.getElementById('address-input').focus();
-                return;
-            }
+function enviarPedidoWhatsApp() {
+    const keys = Object.keys(cart);
+    if (keys.length === 0) {
+        alert("Por favor, agrega productos al carro antes de enviar.");
+        return;
+    }
 
-            const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+    // 1. Rescatamos el nombre del cliente
+    const nombreCliente = document.getElementById('nombreCliente').value.trim();
+    const deliveryMethod = document.querySelector('input[name="delivery"]:checked').value;
+    const address = document.getElementById('address-input').value.trim();
+    
+    // VALIDACIÓN: Si el nombre está vacío, frena el envío y le avisa al cliente
+    if (nombreCliente === "") {
+        alert("Por favor, ingresa tu nombre antes de enviar el pedido.");
+        document.getElementById('nombreCliente').focus();
+        return;
+    }
 
-            let texto = "*¡HOLA! ME GUSTARÍA REALIZAR EL SIGUIENTE PEDIDO:* \n\n";
-            texto += "--------------------------------------\n";
-            
-            let total = 0;
-            keys.forEach(name => {
-                const item = cart[name];
-                const itemTotal = item.price * item.qty;
-                total += itemTotal;
-                // 👇 AQUÍ SE INYECTÓ LA CATEGORÍA EN EL MENSAJE DE WHATSAPP
-                texto += `*${item.qty}x* [${item.categoria}] ${name} (${formatPrice(item.price)} c/u) -> *${formatPrice(itemTotal)}*\n`;
-            });
-            
-            texto += "--------------------------------------\n";
-            texto += `*TOTAL A PAGAR:* ${formatPrice(total)}\n\n`;
-            texto += `*CLIENTE:* ${nombreCliente}\n`; // <-- Aquí va el nombre
-            texto += `*ENTREGA:* ${deliveryMethod}\n`;
-            if (deliveryMethod === 'Delivery') {
-                texto += `*DIRECCIÓN:* ${address}\n`;
-            }
-            texto += `*MÉTODO DE PAGO:* ${paymentMethod}\n\n`;
+    if (deliveryMethod === 'Delivery' && address === "") {
+        alert("Por favor, ingresa tu dirección para poder enviarte el Delivery.");
+        document.getElementById('address-input').focus();
+        return;
+    }
 
-            const notas = document.getElementById('notes-input').value.trim();
-            if (notas !== "") {
-                texto += `*📝 INDICACIONES ESPECIALES:*\n_${notas}_\n\n`;
-            }
+    const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
 
-            texto += "🤖 _Carta interactiva web, puede haber variaciones de el valor final_";
+    let texto = "*¡HOLA! ME GUSTARÍA REALIZAR EL SIGUIENTE PEDIDO:* \n\n";
+    texto += "--------------------------------------\n";
+    
+    let total = 0;
+    keys.forEach(name => {
+        const item = cart[name];
+        const itemTotal = item.price * item.qty;
+        total += itemTotal;
+        
+        // MODIFICADO: Se eliminó '[${item.categoria}]' de esta línea 👇
+        texto += `*${item.qty}x* ${name} (${formatPrice(item.price)} c/u) -> *${formatPrice(itemTotal)}*\n`;
+    });
+    
+    texto += "--------------------------------------\n";
+    texto += `*TOTAL A PAGAR:* ${formatPrice(total)}\n\n`;
+    
+    // Aquí se estructura el cierre con el nombre antes de la dirección
+    texto += `*CLIENTE:* ${nombreCliente}\n`; 
+    texto += `*ENTREGA:* ${deliveryMethod}\n`;
+    if (deliveryMethod === 'Delivery') {
+        texto += `*DIRECCIÓN:* ${address}\n`;
+    }
+    texto += `*MÉTODO DE PAGO:* ${paymentMethod}\n\n`;
 
-            const textoUrl = encodeURIComponent(texto);
-            const urlWhatsApp = `https://wa.me/${TELEFONO_RESTAURANT}?text=${textoUrl}`;
+    const notas = document.getElementById('notes-input').value.trim();
+    if (notas !== "") {
+        texto += `*📝 INDICACIONES ESPECIALES:*\n_${notas}_\n\n`;
+    }
 
-            window.open(urlWhatsApp, '_blank');
-        }
+    texto += "🤖 _Carta interactiva web, puede haber variaciones de el valor final_";
+
+    const textoUrl = encodeURIComponent(texto);
+    const urlWhatsApp = `https://wa.me/${TELEFONO_RESTAURANT}?text=${textoUrl}`;
+
+    window.open(urlWhatsApp, '_blank');
+}
+
 
         document.addEventListener('DOMContentLoaded', cargarMenu);
     </script>
