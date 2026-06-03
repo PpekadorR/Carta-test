@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carta Sushi Like</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .cart-totals-group {
+            margin-top: 1.2rem;
+            border-top: 1px solid #333;
+            padding-top: 0.8rem;
+        }
+        .cart-subtotal-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+        }
+        .cart-total {
+            border-top: none !important;
+            padding-top: 0.3rem !important;
+            margin: 0.5rem 0 !important;
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        /* Opciones de Pago y Entrega */
+        .checkout-options {
+            margin-top: 1rem;
+            border-top: 1px solid #333;
+            padding-top: 0.8rem;
+        }
+        .checkout-options h4 {
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .radio-group label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        input[type="radio"] {
+            accent-color: var(--accent-color);
+            cursor: pointer;
+        }
+        #address-input {
+            width: 100%;
+            padding: 8px;
+            background-color: var(--bg-color);
+            border: 1px solid #444;
+            color: var(--text-main);
+            border-radius: 4px;
+            margin-top: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+        #address-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="Logo Sushi" class="logo-img">
+        
+        <h1>Nuestra Carta</h1>
+        <p class="subtitle">Explora nuestras categorías y arma tu pedido directo a WhatsApp</p>
+        <p class="subtitle">Delivery gratis por compras superiores a $18.000</p>
+    </header>
+
+    <main class="main-layout">
+        
+        <div class="menu-container" id="menu-container">
+            </div>
+
+        <aside class="cart-sidebar">
+            <h3>Tu Pedido</h3>
+            
+            <div id="cart-content">
+                <p class="cart-empty">El carrito está vacío</p>
+            </div>
+
+            <div class="order-notes">
+                <label for="notes-input">Indicaciones para la cocina:</label>
+                <textarea id="notes-input" rows="2" placeholder="Ej: Sin cebollín, cambiar panko..."></textarea>
+            </div>
+
+            <div class="checkout-options">
+                <h4>Método de Entrega</h4>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="delivery" value="Retiro en local" checked onchange="toggleAddress()"> 
+                        Retiro en local
+                    </label>
+                    <label>
+                        <input type="radio" name="delivery" value="Delivery" onchange="toggleAddress()"> 
+                        Delivery
+                    </label>
+                </div>
+                <div id="address-container" style="display: none;">
+                    <input type="text" id="address-input" placeholder="Ingresa tu dirección, comuna y depto...">
+                </div>
+            </div>
+
+            <div class="checkout-options">
+                <h4>Método de Pago</h4>
+                <div class="radio-group">
+                    <label><input type="radio" name="payment" value="Efectivo" checked> Efectivo</label>
+                    <label><input type="radio" name="payment" value="Transferencia"> Transferencia</label>
+                    <label><input type="radio" name="payment" value="Tarjeta"> Tarjeta (Débito/Crédito)</label>
+                </div>
+            </div>
+
+            <div class="cart-totals-group">
+                <div class="cart-total">
+                    <span>Total a Pagar:</span>
+                    <span id="cart-total-value">$0</span>
+                </div>
+            </div>
+
+            <button class="btn-whatsapp" id="btn-submit-order" onclick="enviarPedidoWhatsApp()">
+                📱 Finalizar Pedido por WhatsApp
+            </button>
+        </aside>
+
+    </main>
+<!-- SECCIÓN MAPA -->
+<div style="text-align: center; margin-top: 40px; margin-bottom: 40px; padding: 0 20px;">
+    <h3 style="margin-bottom: 15px; color: #333;">Encuéntranos aquí</h3>
+    
+    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d856351.7077134319!2d-71.5423744!3d-33.0268672!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9689d7787918200f%3A0xfc14b68e3f5b381f!2sAlmte.%20Latorre%20292%2C%20Villa%20Alemana%2C%20Valpara%C3%ADso!5e0!3m2!1ses!2scl!4v1780292503861!5m2!1ses!2scl" width="100%" height="300" style="border:0; border-radius: 15px; max-width: 600px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+</div>
+<!-- FIN SECCIÓN MAPA -->
+    
+    <footer>
+        <p>Pekador Designs © 2026 - Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        const TELEFONO_RESTAURANT = "56322122263"; 
+
+        let cart = {};
+
+        function cleanPrice(priceStr) {
+            return parseInt(priceStr.replace(/[^0-9]/g, ''), 10);
+        }
+
+        function formatPrice(number) {
+            return '$' + number.toLocaleString('es-CL');
+        }
+
+        function renderizarCuadricula(categoria, contenedorDestino) {
+            if (categoria.alerta) {
+                const alert = document.createElement('span');
+                alert.className = 'alert-text';
+                alert.textContent = categoria.alerta;
+                contenedorDestino.appendChild(alert);
+            }
+
+            const grid = document.createElement('div');
+            grid.className = 'grid';
+
+            categoria.items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
+
+                const header = document.createElement('div');
+                header.className = 'item-header';
+                header.innerHTML = `
+                    <span class="item-name">${item.nombre}</span>
+                    <span class="item-price">${item.precio}</span>
+                `;
+                card.appendChild(header);
+
+                const descContainer = document.createElement('div');
+                descContainer.className = 'item-desc';
+
+                if (categoria.tipo === 'tarjeta-lista' && item.detalles) {
+                    const ul = document.createElement('ul');
+                    item.detalles.forEach(detalle => {
+                        const li = document.createElement('li');
+                        li.textContent = detalle;
+                        ul.appendChild(li);
+                    });
+                    descContainer.appendChild(ul);
+                } else if (item.descripcion) {
+                    descContainer.textContent = item.descripcion;
+                }
+                card.appendChild(descContainer);
+
+                const btnAdd = document.createElement('button');
+                btnAdd.className = 'btn-add';
+                btnAdd.textContent = 'Agregar';
+                // 👇 AQUÍ SE AÑADIÓ LA CATEGORÍA AL CARRITO
+                btnAdd.onclick = () => addToCart(item.nombre, item.precio, categoria.titulo);
+                card.appendChild(btnAdd);
+
+                grid.appendChild(card);
+            });
+
+            contenedorDestino.appendChild(grid);
+        }
+
+        async function cargarMenu() {
+            try {
+                const response = await fetch('menu.json');
+                const data = await response.json();
+                const container = document.getElementById('menu-container');
+
+                data.categorias.forEach(categoria => {
+                    const section = document.createElement('section');
+                    section.className = 'category-section';
+
+                    const headerToggle = document.createElement('div');
+                    headerToggle.className = 'category-header';
+                    headerToggle.innerHTML = `
+                        <span class="category-title">${categoria.titulo}</span>
+                        <span class="category-icon">▼</span>
+                    `;
+                    section.appendChild(headerToggle);
+
+                    const bodyContainer = document.createElement('div');
+                    bodyContainer.className = 'category-body';
+
+                    if (categoria.esGrupo) {
+                        bodyContainer.classList.add('group-content');
+                        
+                        categoria.subcategorias.forEach(subCat => {
+                            const subSection = document.createElement('div');
+                            subSection.className = 'subcategory-item';
+
+                            const subHeader = document.createElement('div');
+                            subHeader.className = 'subcategory-header';
+                            subHeader.innerHTML = `
+                                <span class="subcategory-title">${subCat.titulo}</span>
+                                <span class="subcategory-icon">▼</span>
+                            `;
+                            subSection.appendChild(subHeader);
+
+                            const subBody = document.createElement('div');
+                            subBody.className = 'subcategory-body';
+                            
+                            renderizarCuadricula(subCat, subBody);
+                            subSection.appendChild(subBody);
+
+                            subHeader.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                subSection.classList.toggle('open');
+                            });
+
+                            bodyContainer.appendChild(subSection);
+                        });
+                    } else {
+                        renderizarCuadricula(categoria, bodyContainer);
+                    }
+
+                    section.appendChild(bodyContainer);
+
+                    headerToggle.addEventListener('click', () => {
+                        section.classList.toggle('open');
+                    });
+
+                    container.appendChild(section);
+                });
+
+            } catch (error) {
+                console.error("Error al procesar el menú:", error);
+            }
+        }
+
+        // 👇 AQUÍ SE ACTUALIZÓ LA FUNCIÓN PARA RECIBIR LA CATEGORÍA
+        function addToCart(name, priceStr, categoriaItem) {
+            const price = cleanPrice(priceStr);
+            if (cart[name]) {
+                cart[name].qty += 1;
+            } else {
+                cart[name] = { price: price, qty: 1, categoria: categoriaItem };
+            }
+            updateCartUI();
+        }
+
+        function changeQty(name, amount) {
+            if (!cart[name]) return;
+            cart[name].qty += amount;
+            if (cart[name].qty <= 0) {
+                delete cart[name];
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const contentContainer = document.getElementById('cart-content');
+            const totalContainer = document.getElementById('cart-total-value');
+            
+            contentContainer.innerHTML = '';
+            const keys = Object.keys(cart);
+            let total = 0;
+
+            if (keys.length === 0) {
+                contentContainer.innerHTML = '<p class="cart-empty">El carrito está vacío</p>';
+                totalContainer.textContent = '$0';
+                return;
+            }
+
+            const list = document.createElement('div');
+            list.className = 'cart-items-list';
+
+            keys.forEach(name => {
+                const item = cart[name];
+                total += item.price * item.qty;
+                
+                const row = document.createElement('div');
+                row.className = 'cart-item';
+                row.innerHTML = `
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${name}</div>
+                        <div class="cart-item-price">${formatPrice(item.price)} x ${item.qty}</div>
+                    </div>
+                    <div class="cart-item-controls">
+                        <button class="btn-qty" onclick="changeQty('${name}', -1)">-</button>
+                        <span>${item.qty}</span>
+                        <button class="btn-qty" onclick="changeQty('${name}', 1)">+</button>
+                    </div>
+                `;
+                list.appendChild(row);
+            });
+
+            contentContainer.appendChild(list);
+            totalContainer.textContent = formatPrice(total);
+        }
+
+        function toggleAddress() {
+            const deliveryMethod = document.querySelector('input[name="delivery"]:checked').value;
+            const addressContainer = document.getElementById('address-container');
+            
+            if (deliveryMethod === 'Delivery') {
+                addressContainer.style.display = 'block';
+            } else {
+                addressContainer.style.display = 'none';
+            }
+        }
+
+        function enviarPedidoWhatsApp() {
+            const keys = Object.keys(cart);
+            if (keys.length === 0) {
+                alert("Por favor, agrega productos al carro antes de enviar.");
+                return;
+            }
+
+            const deliveryMethod = document.querySelector('input[name="delivery"]:checked').value;
+            const address = document.getElementById('address-input').value.trim();
+            
+            if (deliveryMethod === 'Delivery' && address === "") {
+                alert("Por favor, ingresa tu dirección para poder enviarte el Delivery.");
+                document.getElementById('address-input').focus();
+                return;
+            }
+
+            const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+
+            let texto = "*¡HOLA! ME GUSTARÍA REALIZAR EL SIGUIENTE PEDIDO:* \n\n";
+            texto += "--------------------------------------\n";
+            
+            let total = 0;
+            keys.forEach(name => {
+                const item = cart[name];
+                const itemTotal = item.price * item.qty;
+                total += itemTotal;
+                // 👇 AQUÍ SE INYECTÓ LA CATEGORÍA EN EL MENSAJE DE WHATSAPP
+                texto += `*${item.qty}x* [${item.categoria}] ${name} (${formatPrice(item.price)} c/u) -> *${formatPrice(itemTotal)}*\n`;
+            });
+            
+            texto += "--------------------------------------\n";
+            texto += `*TOTAL A PAGAR:* ${formatPrice(total)}\n\n`;
+
+            texto += `*ENTREGA:* ${deliveryMethod}\n`;
+            if (deliveryMethod === 'Delivery') {
+                texto += `*DIRECCIÓN:* ${address}\n`;
+            }
+            texto += `*MÉTODO DE PAGO:* ${paymentMethod}\n\n`;
+
+            const notas = document.getElementById('notes-input').value.trim();
+            if (notas !== "") {
+                texto += `*📝 INDICACIONES ESPECIALES:*\n_${notas}_\n\n`;
+            }
+
+            texto += "🤖 _Carta interactiva web, puede haber variaciones de el valor final_";
+
+            const textoUrl = encodeURIComponent(texto);
+            const urlWhatsApp = `https://wa.me/${TELEFONO_RESTAURANT}?text=${textoUrl}`;
+
+            window.open(urlWhatsApp, '_blank');
+        }
+
+        document.addEventListener('DOMContentLoaded', cargarMenu);
+    </script>
+</body>
+</html>
