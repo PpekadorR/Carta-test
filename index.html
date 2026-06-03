@@ -370,7 +370,7 @@ function enviarPedidoWhatsApp() {
     }
 
     // 1. Rescatamos el nombre del cliente
-    const nombreCliente = document.getElementById('nombreCliente').value.trim();
+    const nombreCliente = document.getElementById('nombreCliente').value.trim().toUpperCase();
     const deliveryMethod = document.querySelector('input[name="delivery"]:checked').value;
     const address = document.getElementById('address-input').value.trim();
     
@@ -399,7 +399,7 @@ keys.forEach(name => {
     total += itemTotal;
 
     // 1. Si tiene alias lo guarda como "[alias] ", si NO tiene se queda totalmente vacío ""
-    const textoAlias = item.alias ? `[${item.alias}] ` : '';
+    const textoAlias = item.alias ? `[*${item.alias}*] ` : '';
 
     // 2. Juntamos todo: Cantidad, Alias (si hay), Nombre completo -> Valor Total
     texto += `*${item.qty}x* ${textoAlias}${name} -> *${formatPrice(itemTotal)}*\n`;
@@ -418,7 +418,7 @@ keys.forEach(name => {
 
     const notas = document.getElementById('notes-input').value.trim();
     if (notas !== "") {
-        texto += `*📝 INDICACIONES ESPECIALES:*\n_${notas}_\n\n`;
+        texto += `*📝 INDICACIONES ESPECIALES:*\n*${notas}*\n\n`;
     }
 
     texto += "🤖 _Carta interactiva web, puede haber variaciones de el valor final_";
