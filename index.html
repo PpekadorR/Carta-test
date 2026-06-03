@@ -214,7 +214,7 @@
                 btnAdd.className = 'btn-add';
                 btnAdd.textContent = 'Agregar';
                 // 👇 AQUÍ SE AÑADIÓ LA CATEGORÍA AL CARRITO
-                btnAdd.onclick = () => addToCart(item.nombre, item.precio, categoria.titulo);
+                btnAdd.onclick = () => addToCart(item.nombre, item.precio, categoria.titulo, item.alias);
                 card.appendChild(btnAdd);
 
                 grid.appendChild(card);
@@ -291,16 +291,16 @@
         }
 
         // 👇 AQUÍ SE ACTUALIZÓ LA FUNCIÓN PARA RECIBIR LA CATEGORÍA
-        function addToCart(name, priceStr, categoriaItem) {
+        function addToCart(name, priceStr, categoriaItem, aliasItem) { // 👈 Añadimos aliasItem aquí
             const price = cleanPrice(priceStr);
             if (cart[name]) {
                 cart[name].qty += 1;
             } else {
-                cart[name] = { price: price, qty: 1, categoria: categoriaItem };
+                // 👈 Guardamos el alias (si no existe en el JSON, se guardará como null)
+                cart[name] = { price: price, qty: 1, categoria: categoriaItem, alias: aliasItem || null };
             }
             updateCartUI();
         }
-
         function changeQty(name, amount) {
             if (!cart[name]) return;
             cart[name].qty += amount;
@@ -392,15 +392,17 @@ function enviarPedidoWhatsApp() {
     let texto = "*¡HOLA! ME GUSTARÍA REALIZAR EL SIGUIENTE PEDIDO:* \n\n";
     texto += "--------------------------------------\n";
     
-    let total = 0;
-    keys.forEach(name => {
-        const item = cart[name];
-        const itemTotal = item.price * item.qty;
-        total += itemTotal;
-        
-        // MODIFICADO: Se eliminó '[${item.categoria}]' de esta línea 👇
-        texto += `*${item.qty}x* ${name} -> *${formatPrice(itemTotal)}*\n`;
-    });
+        let total = 0;
+        keys.forEach(name => {
+            const item = cart[name];
+            const itemTotal = item.price * item.qty;
+            total += itemTotal;
+    
+            // 👈 Evaluamos si el producto tiene alias guardado
+            const nombreMensaje = item.alias ? item.alias : name;
+    
+            texto += `*${item.qty}x* ${nombreMensaje} -> *${formatPrice(itemTotal)}*\n`;
+        });
     
     texto += "--------------------------------------\n";
     texto += `*TOTAL A PAGAR:* ${formatPrice(total)}\n\n`;
