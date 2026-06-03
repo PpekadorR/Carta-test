@@ -337,22 +337,29 @@
       "alerta": "",
       "tipo": "tarjeta-simple",
       "items": [
-        { "nombre": "SALMÓN (3 Cortes)", "precio": "$2.800", "descripcion": "" },
-        { "nombre": "SALMÓN (6 Cortes)", "precio": "$5.000", "descripcion": "" },
-        { "nombre": "SALMÓN (12 Cortes)", "precio": "$9.000", "descripcion": "" },
-        { "nombre": "PULPO (3 Cortes)", "precio": "$3.400", "descripcion": "" },
-        { "nombre": "PULPO (6 Cortes)", "precio": "$6.000", "descripcion": "" },
-        { "nombre": "PULPO (12 Cortes)", "precio": "$10.500", "descripcion": "" }
+        { "nombre": "Sashimi de Salmón (3 Cortes)", "precio": "$2.800", "descripcion": "" },
+        { "nombre": "Sashimi de Salmón (6 Cortes)", "precio": "$5.000", "descripcion": "" },
+        { "nombre": "Sashimi de Salmón (12 Cortes)", "precio": "$9.000", "descripcion": "" },
+        { "nombre": "Sashimi de Pulpo (3 Cortes)", "precio": "$3.400", "descripcion": "" },
+        { "nombre": "Sashimi de Pulpo (6 Cortes)", "precio": "$6.000", "descripcion": "" },
+        { "nombre": "Sashimi de Pulpo (12 Cortes)", "precio": "$10.500", "descripcion": "" }
       ]
     },
     {
-      "titulo": "Nigiris y Nigiris Crispy",
+      "titulo": "Nigiris",
       "alerta": "",
       "tipo": "tarjeta-simple",
       "items": [
         { "nombre": "Nigiri de Salmón (1 Unidad)", "precio": "$1.000", "descripcion": "" },
         { "nombre": "Nigiri de Camarón (1 Unidad)", "precio": "$1.000", "descripcion": "" },
-        { "nombre": "Nigiri de Kanikama (1 Unidad)", "precio": "$900", "descripcion": "" },
+        { "nombre": "Nigiri de Kanikama (1 Unidad)", "precio": "$900", "descripcion": "" }
+      ]
+    },
+        {
+      "titulo": "Nigiris Crispy",
+      "alerta": "",
+      "tipo": "tarjeta-simple",
+      "items": [
         { "nombre": "Nigiris Crispy Pollo (4 Unidades)", "precio": "$4.790", "descripcion": "Mezcla de arroz - Pollo - Queso Cream - Cebollín" },
         { "nombre": "Nigiris Crispy Camarón (4 Unidades)", "precio": "$4.990", "descripcion": "Mezcla de arroz - Camarón - Queso Cream - Cebollín" }
       ]
