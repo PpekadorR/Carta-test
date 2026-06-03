@@ -416,7 +416,7 @@ keys.forEach(name => {
     }
     texto += `*MÉTODO DE PAGO:* ${paymentMethod}\n\n`;
 
-    const notas = document.getElementById('notes-input').value.trim();
+    const notas = document.getElementById('notes-input').value.trim().toUpperCase();
     if (notas !== "") {
         texto += `*📝 NOTAS COCINA:*\n*${notas}*\n\n`;
     }
