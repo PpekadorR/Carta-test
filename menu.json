@@ -239,11 +239,11 @@
           "alerta": "Rolls de 8 cortes, 5 ingredientes y sin arroz",
           "tipo": "tarjeta-simple",
           "items": [
-            { "nombre": "Opción 1", "precio": "$7.900", "descripcion": "Salmón - Camarón - Queso Cream - Cebollín - Choclo Baby Panko (Envuelto en Palta)" },
-            { "nombre": "Opción 2", "precio": "$7.500", "descripcion": "Pollo Panko - Palta - Palmito - Cebollín - Pimentón (Envuelto en Queso Cream)" },
-            { "nombre": "Opción 3", "precio": "$8.000", "descripcion": "Camarón Panko - Queso Cream - Masago - Palta - Cebollín (Envuelto en Salmón)" },
-            { "nombre": "Opción 4", "precio": "$7.600", "descripcion": "Pollo Teriyaki - Palta - Nueces - Almendras - Queso Cream - Cebollín (Env. Panko)" },
-            { "nombre": "Opción 5", "precio": "$8.100", "descripcion": "Camarón - Salmón - Queso Cream - Palta - Cebollín (Envuelto en Panko)" }
+            { "nombre": "Sin Arroz Opción 1", "precio": "$7.900", "descripcion": "Salmón - Camarón - Queso Cream - Cebollín - Choclo Baby Panko (Envuelto en Palta)" },
+            { "nombre": "Sin Arroz Opción 2", "precio": "$7.500", "descripcion": "Pollo Panko - Palta - Palmito - Cebollín - Pimentón (Envuelto en Queso Cream)" },
+            { "nombre": "Sin Arroz Opción 3", "precio": "$8.000", "descripcion": "Camarón Panko - Queso Cream - Masago - Palta - Cebollín (Envuelto en Salmón)" },
+            { "nombre": "Sin Arroz Opción 4", "precio": "$7.600", "descripcion": "Pollo Teriyaki - Palta - Nueces - Almendras - Queso Cream - Cebollín (Env. Panko)" },
+            { "nombre": "Sin Arroz Opción 5", "precio": "$8.100", "descripcion": "Camarón - Salmón - Queso Cream - Palta - Cebollín (Envuelto en Panko)" }
           ]
         },
         {
@@ -317,9 +317,9 @@
       "alerta": "",
       "tipo": "tarjeta-simple",
       "items": [
-        { "nombre": "Pollo", "precio": "$4.500", "descripcion": "Pollo - Queso - Cebolllín" },
-        { "nombre": "Camarón", "precio": "$4.800", "descripcion": "Camarón - Queso - Cebolllín" },
-        { "nombre": "Vegetal", "precio": "$4.300", "descripcion": "Verduras - Palmito - Palta - Cebollín" }
+        { "nombre": "Handroll Pollo", "precio": "$4.500", "descripcion": "Pollo - Queso - Cebolllín" },
+        { "nombre": "Handroll Camarón", "precio": "$4.800", "descripcion": "Camarón - Queso - Cebolllín" },
+        { "nombre": "Handroll Vegetal", "precio": "$4.300", "descripcion": "Verduras - Palmito - Palta - Cebollín" }
       ]
     },
     {
@@ -327,9 +327,9 @@
       "alerta": "",
       "tipo": "tarjeta-simple",
       "items": [
-        { "nombre": "Pollo", "precio": "$7.490", "descripcion": "Pollo - Queso - Palta - Cebolllín - (Frita en Panko)" },
-        { "nombre": "Camarón", "precio": "$7.990", "descripcion": "Camarón - Queso - Palta - Cebolllín - (Frita en Panko)" },
-        { "nombre": "Salmón", "precio": "$8.490", "descripcion": "Salmón - Queso - Palta - Cebolllín - (Frita en Panko)" }
+        { "nombre": "Burger Pollo", "precio": "$7.490", "descripcion": "Pollo - Queso - Palta - Cebolllín - (Frita en Panko)" },
+        { "nombre": "Burger Camarón", "precio": "$7.990", "descripcion": "Camarón - Queso - Palta - Cebolllín - (Frita en Panko)" },
+        { "nombre": "Burger Salmón", "precio": "$8.490", "descripcion": "Salmón - Queso - Palta - Cebolllín - (Frita en Panko)" }
       ]
     },
     {
