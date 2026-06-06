@@ -220,23 +220,65 @@ header h1 {
     margin-bottom: 0.15rem;
 }
 
-.btn-add {
-    background-color: transparent;
-    color: var(--accent-color);
-    border: 1px solid var(--accent-color);
-    padding: 0.4rem 0.8rem;
+/* --- INTEGRADO: CONTENEDOR TRIPLE DE BOTONES EN TARJETAS --- */
+.card-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    margin-top: auto;
+}
+
+/* Botones laterales (- y +) */
+.btn-card-qty {
+    background-color: #242424;
+    color: #fff;
+    border: 1px solid #333;
+    width: 34px;
+    height: 34px;
     border-radius: 4px;
     cursor: pointer;
     font-weight: bold;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: all 0.2s ease;
-    width: 100%;
-    text-transform: uppercase;
-    font-size: 0.8rem;
 }
 
-.btn-add:hover {
+.btn-card-qty:hover {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+/* Botón Central dinámico (Texto Agregar o Cantidad) */
+.btn-card-center {
+    flex: 1;
+    background-color: transparent;
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    height: 34px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-card-center:hover {
+    background-color: rgba(195, 32, 29, 0.1);
+}
+
+/* Estado activo cuando el producto ya está en el carro */
+.btn-card-center.has-items {
     background-color: var(--accent-color);
     color: #fff;
+    font-size: 1.05rem;
+    border-color: var(--accent-color);
 }
 
 /* CARRITO LATERAL */
@@ -400,25 +442,9 @@ footer {
 
 /* --- ESTILOS PARA EL LOGO DE CABECERA --- */
 .logo-img {
-    max-width: 150px; /* Controla qué tan grande se ve el logo */
+    max-width: 150px;
     height: auto;
     display: block;
-    margin: 0 auto 15px auto; /* Lo centra y le da un espacio hacia abajo */
-    border-radius: 8px; /* Opcional: redondea un poco las puntas de la imagen */
-}
-
-/* Estilos para el campo del nombre */
-#nombreCliente {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #444;
-    background-color: #222;
-    color: #fff;
-    margin-bottom: 15px;
-}
-
-/* Opcional: Para cambiar el color del texto del placeholder */
-#nombreCliente::placeholder {
-    color: #888;
+    margin: 0 auto 15px auto;
+    border-radius: 8px;
 }
