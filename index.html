@@ -87,7 +87,7 @@
     <main class="main-layout">
         
         <div class="menu-container" id="menu-container">
-            </div>
+        </div>
 
         <aside class="cart-sidebar">
             <h3>Tu Pedido</h3>
@@ -100,11 +100,11 @@
                 <label for="notes-input">Indicaciones para la cocina:</label>
                 <textarea id="notes-input" rows="2" placeholder="Ej: Sin cebollín, cambiar panko..."></textarea>
             </div>
-<!-- NUEVO CAMPO PARA EL NOMBRE -->
-             <div class="form-group">
-                  <label for="nombreCliente"><b>TU NOMBRE:</b></label>
-                  <input type="text" id="nombreCliente" placeholder="Ej: Benito Martínez" class="form-control" required>
-             </div>
+
+            <div class="form-group">
+                 <label for="nombreCliente"><b>TU NOMBRE:</b></label>
+                 <input type="text" id="nombreCliente" placeholder="Ej: Benito Martínez" class="form-control" required>
+            </div>
             
             <div class="checkout-options">
                 <h4>Método de Entrega</h4>
@@ -145,15 +145,12 @@
         </aside>
 
     </main>
-<!-- SECCIÓN MAPA -->
-<div style="text-align: center; margin-top: 40px; margin-bottom: 40px; padding: 0 20px;">
-    <h3 style="margin-bottom: 15px; color: #333;">Encuéntranos aquí</h3>
-    
-    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d856351.7077134319!2d-71.5423744!3d-33.0268672!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9689d7787918200f%3A0xfc14b68e3f5b381f!2sAlmte.%20Latorre%20292%2C%20Villa%20Alemana%2C%20Valpara%C3%ADso!5e0!3m2!1ses!2scl!4v1780292503861!5m2!1ses!2scl" width="100%" height="300" style="border:0; border-radius: 15px; max-width: 600px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 
-</div>
-<!-- FIN SECCIÓN MAPA -->
-    
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 40px; padding: 0 20px;">
+        <h3 style="margin-bottom: 15px; color: #333;">Encuéntranos aquí</h3>
+        
+        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d856351.7077134319!2d-71.5423744!3d-33.0268672!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9689d7787918200f%3A0xfc14b68e3f5b381f!2sAlmte.%20Latorre%20292%2C%20Villa%20Alemana%2C%20Valpara%C3%ADso!5e0!3m2!1ses!2scl!4v1780292503861!5m2!1ses!2scl" width="100%" height="300" style="border:0; border-radius: 15px; max-width: 600px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
     <footer>
         <p>Pekador Designs © 2026 - Todos los derechos reservados.</p>
     </footer>
@@ -210,12 +207,38 @@
                 }
                 card.appendChild(descContainer);
 
-                const btnAdd = document.createElement('button');
-                btnAdd.className = 'btn-add';
-                btnAdd.textContent = 'Agregar';
-                // 👇 AQUÍ SE AÑADIÓ LA CATEGORÍA AL CARRITO
-                btnAdd.onclick = () => addToCart(item.nombre, item.precio, categoria.titulo, item.alias);
-                card.appendChild(btnAdd);
+                // INTEGRADO: Controles triples en cada tarjeta (- AGREGAR +)
+                const controls = document.createElement('div');
+                controls.className = 'card-controls';
+                controls.setAttribute('data-name', item.nombre);
+
+                const btnMinus = document.createElement('button');
+                btnMinus.className = 'btn-card-qty';
+                btnMinus.textContent = '-';
+                btnMinus.onclick = () => {
+                    if (cart[item.nombre]) {
+                        changeQty(item.nombre, -1);
+                    }
+                };
+
+                const btnCenter = document.createElement('button');
+                btnCenter.className = 'btn-card-center';
+                btnCenter.textContent = 'Agregar';
+                btnCenter.onclick = () => {
+                    addToCart(item.nombre, item.precio, categoria.titulo, item.alias);
+                };
+
+                const btnPlus = document.createElement('button');
+                btnPlus.className = 'btn-card-qty';
+                btnPlus.textContent = '+';
+                btnPlus.onclick = () => {
+                    addToCart(item.nombre, item.precio, categoria.titulo, item.alias);
+                };
+
+                controls.appendChild(btnMinus);
+                controls.appendChild(btnCenter);
+                controls.appendChild(btnPlus);
+                card.appendChild(controls);
 
                 grid.appendChild(card);
             });
@@ -290,17 +313,16 @@
             }
         }
 
-        // 👇 AQUÍ SE ACTUALIZÓ LA FUNCIÓN PARA RECIBIR LA CATEGORÍA
-        function addToCart(name, priceStr, categoriaItem, aliasItem) { // 👈 Añadimos aliasItem aquí
+        function addToCart(name, priceStr, categoriaItem, aliasItem) {
             const price = cleanPrice(priceStr);
             if (cart[name]) {
                 cart[name].qty += 1;
             } else {
-                // 👈 Guardamos el alias (si no existe en el JSON, se guardará como null)
                 cart[name] = { price: price, qty: 1, categoria: categoriaItem, alias: aliasItem || null };
             }
             updateCartUI();
         }
+
         function changeQty(name, amount) {
             if (!cart[name]) return;
             cart[name].qty += amount;
@@ -317,6 +339,19 @@
             contentContainer.innerHTML = '';
             const keys = Object.keys(cart);
             let total = 0;
+
+            // INTEGRADO: Sincronización automática de botones en las tarjetas
+            document.querySelectorAll('.card-controls').forEach(control => {
+                const name = control.getAttribute('data-name');
+                const btnCenter = control.querySelector('.btn-card-center');
+                if (cart[name]) {
+                    btnCenter.textContent = cart[name].qty;
+                    btnCenter.classList.add('has-items');
+                } else {
+                    btnCenter.textContent = 'Agregar';
+                    btnCenter.classList.remove('has-items');
+                }
+            });
 
             if (keys.length === 0) {
                 contentContainer.innerHTML = '<p class="cart-empty">El carrito está vacío</p>';
@@ -362,73 +397,66 @@
             }
         }
 
-function enviarPedidoWhatsApp() {
-    const keys = Object.keys(cart);
-    if (keys.length === 0) {
-        alert("Por favor, agrega productos al carro antes de enviar.");
-        return;
-    }
+        function enviarPedidoWhatsApp() {
+            const keys = Object.keys(cart);
+            if (keys.length === 0) {
+                alert("Por favor, agrega productos al carro antes de enviar.");
+                return;
+            }
 
-    // 1. Rescatamos el nombre del cliente
-    const nombreCliente = document.getElementById('nombreCliente').value.trim().toUpperCase();
-    const deliveryMethod = document.querySelector('input[name="delivery"]:checked').value;
-    const address = document.getElementById('address-input').value.trim();
-    
-    // VALIDACIÓN: Si el nombre está vacío, frena el envío y le avisa al cliente
-    if (nombreCliente === "") {
-        alert("Por favor, ingresa tu nombre antes de enviar el pedido.");
-        document.getElementById('nombreCliente').focus();
-        return;
-    }
+            const nombreCliente = document.getElementById('nombreCliente').value.trim().toUpperCase();
+            const deliveryMethod = document.querySelector('input[name="delivery"]:checked').value;
+            const address = document.getElementById('address-input').value.trim();
+            
+            if (nombreCliente === "") {
+                alert("Por favor, ingresa tu nombre antes de enviar el pedido.");
+                document.getElementById('nombreCliente').focus();
+                return;
+            }
 
-    if (deliveryMethod === 'Delivery' && address === "") {
-        alert("Por favor, ingresa tu dirección para poder enviarte el Delivery.");
-        document.getElementById('address-input').focus();
-        return;
-    }
+            if (deliveryMethod === 'Delivery' && address === "") {
+                alert("Por favor, ingresa tu dirección para poder enviarte el Delivery.");
+                document.getElementById('address-input').focus();
+                return;
+            }
 
-    const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+            const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
 
-    let texto = "*¡HOLA! ME GUSTARÍA REALIZAR EL SIGUIENTE PEDIDO:* \n\n";
-    texto += "--------------------------------------\n";
-    
-let total = 0;
-keys.forEach(name => {
-    const item = cart[name];
-    const itemTotal = item.price * item.qty;
-    total += itemTotal;
+            let texto = "*¡HOLA! ME GUSTARÍA REALIZAR EL SIGUIENTE PEDIDO:* \n\n";
+            texto += "--------------------------------------\n";
+            
+            let total = 0;
+            keys.forEach(name => {
+                const item = cart[name];
+                const itemTotal = item.price * item.qty;
+                total += itemTotal;
 
-    // 1. Si tiene alias lo guarda como "[alias] ", si NO tiene se queda totalmente vacío ""
-    const textoAlias = item.alias ? `*${item.alias}* -> ` : '';
+                const textoAlias = item.alias ? `*${item.alias}* -> ` : '';
+                texto += `*${item.qty}x* ${textoAlias}${name} -> *${formatPrice(itemTotal)}*\n`;
+            });
+            
+            texto += "--------------------------------------\n";
+            texto += `*TOTAL A PAGAR:* ${formatPrice(total)}\n\n`;
+            
+            texto += `*CLIENTE*: *${nombreCliente}*\n`; 
+            texto += `*ENTREGA*: ${deliveryMethod}\n`;
+            if (deliveryMethod === 'Delivery') {
+                texto += `*DIRECCIÓN:* ${address}\n`;
+            }
+            texto += `*MÉTODO DE PAGO:* ${paymentMethod}\n\n`;
 
-    // 2. Juntamos todo: Cantidad, Alias (si hay), Nombre completo -> Valor Total
-    texto += `*${item.qty}x* ${textoAlias}${name} -> *${formatPrice(itemTotal)}*\n`;
-});
-    
-    texto += "--------------------------------------\n";
-    texto += `*TOTAL A PAGAR:* ${formatPrice(total)}\n\n`;
-    
-    // Aquí se estructura el cierre con el nombre antes de la dirección
-    texto += `*CLIENTE*: *${nombreCliente}*\n`; 
-    texto += `*ENTREGA*: ${deliveryMethod}\n`;
-    if (deliveryMethod === 'Delivery') {
-        texto += `*DIRECCIÓN:* ${address}\n`;
-    }
-    texto += `*MÉTODO DE PAGO:* ${paymentMethod}\n\n`;
+            const notas = document.getElementById('notes-input').value.trim().toUpperCase();
+            if (notas !== "") {
+                texto += `*📝 NOTAS COCINA:*\n*${notas}*\n\n`;
+            }
 
-    const notas = document.getElementById('notes-input').value.trim().toUpperCase();
-    if (notas !== "") {
-        texto += `*📝 NOTAS COCINA:*\n*${notas}*\n\n`;
-    }
+            texto += "🤖 _Carta interactiva web, puede haber variaciones de el valor final_";
 
-    texto += "🤖 _Carta interactiva web, puede haber variaciones de el valor final_";
+            const textoUrl = encodeURIComponent(texto);
+            const urlWhatsApp = `https://wa.me/${TELEFONO_RESTAURANT}?text=${textoUrl}`;
 
-    const textoUrl = encodeURIComponent(texto);
-    const urlWhatsApp = `https://wa.me/${TELEFONO_RESTAURANT}?text=${textoUrl}`;
-
-    window.open(urlWhatsApp, '_blank');
-}
-
+            window.open(urlWhatsApp, '_blank');
+        }
 
         document.addEventListener('DOMContentLoaded', cargarMenu);
     </script>
